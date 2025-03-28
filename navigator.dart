@@ -63,13 +63,41 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/a');
+                //Navigator.pushNamed(context, '/a');
+                Navigator.push(context,
+                    MaterialPageRoute<bool>(builder: (BuildContext context) {
+                  return Center(
+                    child: GestureDetector(
+                        child: const Text('OK'),
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        }),
+                  );
+                }));
               },
               child: const Text('Go to page A'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/b');
+                //Navigator.pushNamed(context, '/b');
+                Navigator.push(
+                    context,
+                    PageRouteBuilder<void>(
+                        opaque: false,
+                        pageBuilder: (BuildContext context, _, __) {
+                          return const Center(child: Text('My PageRoute'));
+                        },
+                        transitionsBuilder:
+                            (_, Animation<double> animation, __, Widget child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: RotationTransition(
+                              turns: Tween<double>(begin: 0.5, end: 1.0)
+                                  .animate(animation),
+                              child: child,
+                            ),
+                          );
+                        }));
               },
               child: const Text('Go to page B'),
             ),
